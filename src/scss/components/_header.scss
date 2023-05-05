@@ -8,16 +8,18 @@
     padding: 30px 0 0 0;
   }
 
-
-
   .container {
     display: flex;
     align-items: center;
     justify-content: space-between;
 
-    @media (max-width: 640px) {
+    @media (max-width: 957px) {
       flex-wrap: wrap;
       justify-content: space-around;
+
+      .header__cart {
+        margin-top: 15px;
+      }
     }
   }
 
@@ -40,13 +42,13 @@
       color: #7b7b7b;
     }
   }
-  @media (max-width: 629px){
-  &__cart {
-    margin-top: 25px;
-    width: 220px;
-    .button--cart {
-      justify-content: space-evenly;
+  @media (max-width: 629px) {
+    &__cart {
+      margin-top: 25px;
+      width: 220px;
+      .button--cart {
+        justify-content: space-evenly;
+      }
     }
-  }
   }
 }

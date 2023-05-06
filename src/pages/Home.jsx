@@ -1,7 +1,11 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCategoryId, setSortType } from '../redux/slices/filterSlice';
+import {
+  setCategoryId,
+  setSortType,
+  setCurrentPage,
+} from '../redux/slices/filterSlice';
 
 import { SearchContext } from '../App';
 import Skeleton from '../components/PizzaBlock/Skeleton';
@@ -14,10 +18,11 @@ export const Home = () => {
   const { searchValue } = useContext(SearchContext);
   const [pizzaArr, setPizzaArr] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
   const [orderSort, setOrderSort] = useState(true);
 
-  const { categoryId, sortType } = useSelector(state => state.filters);
+  const { categoryId, sortType, currentPage } = useSelector(
+    state => state.filters
+  );
   const dispatch = useDispatch();
 
   const typeArr = ['rating', 'price', 'title'];
@@ -70,7 +75,10 @@ export const Home = () => {
             ? [...new Array(6)].map((_, i) => <Skeleton key={i} />)
             : pizzaArr}
         </div>
-        <Pagination onChangePage={number => setCurrentPage(number)} />
+        <Pagination
+          currentPage={currentPage}
+          onChangePage={number => dispatch(setCurrentPage(number))}
+        />
       </div>
     </>
   );

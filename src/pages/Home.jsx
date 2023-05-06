@@ -1,25 +1,28 @@
-import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
+import React, { useContext, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setCategoryId, setSortType } from '../redux/slices/filterSlice';
 
+import { SearchContext } from '../App';
 import Skeleton from '../components/PizzaBlock/Skeleton';
 import { Category } from '../components/Category';
 import { Sort } from '../components/Sort';
 import { Index } from '../components/PizzaBlock';
 import { Pagination } from '../components/Pagination';
-import { SearchContext } from '../App';
 
 export const Home = () => {
   const { searchValue } = useContext(SearchContext);
   const [pizzaArr, setPizzaArr] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [categoryId, setCategoryId] = useState(0);
-  const [sortType, setSortType] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [orderSort, setOrderSort] = useState(true);
 
+  const { categoryId, sortType } = useSelector(state => state.filters);
+  const dispatch = useDispatch();
+
   const typeArr = ['rating', 'price', 'title'];
   const category = categoryId ? `category=${categoryId}` : '';
-  const orderType = orderSort ? 'desc' : 'asc';
+  const kindOfSorting = orderSort ? 'desc' : 'asc';
   const search = searchValue ? `title=${searchValue}` : '';
 
   const getPizza = async () => {
@@ -27,7 +30,7 @@ export const Home = () => {
     try {
       await axios
         .get(
-          `https://6451ed17a2860c9ed4fdac76.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${typeArr[sortType]}&order=${orderType}&${search}`
+          `https://6451ed17a2860c9ed4fdac76.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${typeArr[sortType]}&order=${kindOfSorting}&${search}`
         )
         .then(res => {
           setPizzaArr(res.data.map(item => <Index {...item} key={item.id} />));
@@ -52,11 +55,11 @@ export const Home = () => {
         <div className="content__top">
           <Category
             value={categoryId}
-            onClickCategory={id => setCategoryId(id)}
+            onClickCategory={id => dispatch(setCategoryId(id))}
           />
           <Sort
             value={sortType}
-            onChangeSortType={type => setSortType(type)}
+            onChangeSortType={type => dispatch(setSortType(type))}
             orderSort={orderSort}
             setOrderSort={setOrderSort}
           />

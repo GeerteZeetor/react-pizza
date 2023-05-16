@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 
-export function Sort({ value, onChangeSortType, setOrderSort, orderSort }) {
+export function Sort({
+  value,
+  onChangeSortType,
+  onChangeOrderSort,
+  orderSort,
+}) {
   const [open, setOpen] = useState(false);
   const sortNames = ['популярности', 'цене', 'алфавиту'];
 
@@ -24,7 +29,7 @@ export function Sort({ value, onChangeSortType, setOrderSort, orderSort }) {
       <div className="sort__label">
         <div
           onClick={() => {
-            setOrderSort(!orderSort);
+            onChangeOrderSort(!orderSort);
           }}
         >
           <svg

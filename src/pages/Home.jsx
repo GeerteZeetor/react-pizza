@@ -1,10 +1,13 @@
 import axios from 'axios';
-import React, { useContext, useEffect, useState } from 'react';
+import qs from 'qs';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   setCategoryId,
   setSortType,
   setCurrentPage,
+  setOrderSort,
+  setFilters,
 } from '../redux/slices/filterSlice';
 
 import { SearchContext } from '../App';
@@ -13,17 +16,20 @@ import { Category } from '../components/Category';
 import { Sort } from '../components/Sort';
 import { Index } from '../components/PizzaBlock';
 import { Pagination } from '../components/Pagination';
+import { useNavigate } from 'react-router-dom';
 
 export const Home = () => {
   const { searchValue } = useContext(SearchContext);
   const [pizzaArr, setPizzaArr] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [orderSort, setOrderSort] = useState(true);
 
-  const { categoryId, sortType, currentPage } = useSelector(
+  const { categoryId, sortType, currentPage, orderSort } = useSelector(
     state => state.filters
   );
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const isSearch = useRef(false);
+  const isMounted = useRef(false);
 
   const typeArr = ['rating', 'price', 'title'];
   const category = categoryId ? `category=${categoryId}` : '';
@@ -49,9 +55,38 @@ export const Home = () => {
     }
   };
 
+  //Если был первый рендер сохраняем URl параметры в редуксе
   useEffect(() => {
-    getPizza().then();
+    if (window.location.search) {
+      const params = qs.parse(window.location.search.substring(1));
+      dispatch(setFilters({ ...params }));
+      isSearch.current = true;
+      console.log(params);
+    }
+  }, []);
+
+  //Если был первый рендер и были изменены параметры
+  useEffect(() => {
+    if (isMounted.current) {
+      const queryString = qs.stringify({
+        sortType,
+        categoryId,
+        currentPage,
+        orderSort,
+      });
+      navigate(`?${queryString}`);
+    }
+    isMounted.current = true;
+  }, [categoryId, sortType, orderSort, search, currentPage]);
+
+  //Если был первый рендер, то запрашиваем пиццы
+  useEffect(() => {
     window.scrollTo(0, 0);
+    console.log(isSearch.current);
+    if (!isSearch.current) {
+      getPizza().then();
+    }
+    isSearch.current = false;
   }, [categoryId, sortType, orderSort, search, currentPage]);
 
   return (
@@ -66,7 +101,7 @@ export const Home = () => {
             value={sortType}
             onChangeSortType={type => dispatch(setSortType(type))}
             orderSort={orderSort}
-            setOrderSort={setOrderSort}
+            onChangeOrderSort={value => dispatch(setOrderSort(value))}
           />
         </div>
         <h2 className="content__title">Все пиццы</h2>

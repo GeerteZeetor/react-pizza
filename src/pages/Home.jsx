@@ -61,7 +61,6 @@ export const Home = () => {
       const params = qs.parse(window.location.search.substring(1));
       dispatch(setFilters({ ...params }));
       isSearch.current = true;
-      console.log(params);
     }
   }, []);
 
@@ -82,7 +81,6 @@ export const Home = () => {
   //Если был первый рендер, то запрашиваем пиццы
   useEffect(() => {
     window.scrollTo(0, 0);
-    console.log(isSearch.current);
     if (!isSearch.current) {
       getPizza().then();
     }

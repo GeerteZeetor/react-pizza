@@ -14,7 +14,7 @@ import { SearchContext } from '../App';
 import Skeleton from '../components/PizzaBlock/Skeleton';
 import { Category } from '../components/Category';
 import { Sort } from '../components/Sort';
-import { Index } from '../components/PizzaBlock';
+import { PizzaBlock } from '../components/PizzaBlock';
 import { Pagination } from '../components/Pagination';
 import { useNavigate } from 'react-router-dom';
 
@@ -44,7 +44,9 @@ export const Home = () => {
           `https://6451ed17a2860c9ed4fdac76.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${typeArr[sortType]}&order=${kindOfSorting}&${search}`
         )
         .then(res => {
-          setPizzaArr(res.data.map(item => <Index {...item} key={item.id} />));
+          setPizzaArr(
+            res.data.map(item => <PizzaBlock {...item} key={item.id} />)
+          );
           setIsLoading(false);
         })
         .catch(reason => {

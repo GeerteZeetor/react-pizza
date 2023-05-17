@@ -329,7 +329,7 @@ body {
       color: #777777;
     }
 
-    icon {
+    span {
       position: relative;
       top: 2px;
     }
@@ -347,5 +347,9 @@ body {
       font-weight: 600;
       font-size: 18px;
     }
+  }
+
+  &--error {
+    display: block;
   }
 }

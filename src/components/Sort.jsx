@@ -7,8 +7,8 @@ export function Sort({
   orderSort,
 }) {
   const [open, setOpen] = useState(false);
-  const sortNames = ['популярности', 'цене', 'алфавиту'];
   const sortRef = useRef();
+  const sortNames = ['популярности', 'цене', 'алфавиту'];
 
   const sortActive = () => {
     return sortNames.map((item, i) => (

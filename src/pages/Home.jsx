@@ -1,18 +1,16 @@
+import React, { useEffect, useRef } from 'react';
 import qs from 'qs';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import React, { useContext, useEffect, useRef, useState } from 'react';
+
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   setCategoryId,
-  setSortType,
   setCurrentPage,
-  setOrderSort,
   setFilters,
+  setOrderSort,
+  setSortType,
 } from '../redux/slices/filterSlice';
 import { fetchPizzas } from '../redux/slices/pizzasSlice';
-
-import { SearchContext } from '../App';
 import Skeleton from '../components/PizzaBlock/Skeleton';
 import { Category } from '../components/Category';
 import { Sort } from '../components/Sort';
@@ -20,11 +18,10 @@ import { PizzaBlock } from '../components/PizzaBlock';
 import { Pagination } from '../components/Pagination';
 
 export const Home = () => {
-  const { searchValue } = useContext(SearchContext);
+  // const { searchValue } = useContext(SearchContext);
 
-  const { categoryId, sortType, currentPage, orderSort } = useSelector(
-    state => state.filters
-  );
+  const { categoryId, sortType, currentPage, orderSort, searchValue } =
+    useSelector(state => state.filters);
   const { items, status } = useSelector(state => state.pizzas);
 
   const dispatch = useDispatch();
@@ -52,7 +49,11 @@ export const Home = () => {
   };
 
   const skeleton = [...new Array(6)].map((_, i) => <Skeleton key={i} />);
-  const pizzas = items.map(item => <PizzaBlock {...item} key={item.id} />);
+  const pizzas = items.map(item => (
+    <Link key={item.id} to={`pizza/${item.id}`}>
+      <PizzaBlock {...item} />
+    </Link>
+  ));
 
   //Если был первый рендер сохраняем URl параметры в редуксе
   useEffect(() => {
@@ -112,6 +113,13 @@ export const Home = () => {
               <br />
               Если не получилось, попробуйте сделать это позднее.
             </p>
+          </div>
+        ) : pizzas.length === 0 && status === 'success' ? (
+          <div className="cart cart--empty cart--error">
+            <h2>
+              Пицц не найдено <span>😕</span>
+            </h2>
+            <p>Попробуйте поискать другие.</p>
           </div>
         ) : (
           <div className="content__items">

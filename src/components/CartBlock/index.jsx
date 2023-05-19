@@ -3,12 +3,12 @@ import style from './slyle.module.scss';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { CartItem } from '../CartItem';
-import { clearItems } from '../../redux/slices/cartSlice';
 import { CartEmpty } from '../CartEmpty';
+import { clearItems, selectCart } from '../../redux/slices/cartSlice';
 
 export const CartBlock = () => {
   const dispatch = useDispatch();
-  const { totalPrice, items } = useSelector(state => state.cart);
+  const { totalPrice, items } = useSelector(selectCart);
   const totalCount = items.reduce((sum, item) => sum + item.count, 0);
 
   const onClickClearCart = () => {

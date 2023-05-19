@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import qs from 'qs';
 
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   setCategoryId,
@@ -18,8 +18,6 @@ import { PizzaBlock } from '../components/PizzaBlock';
 import { Pagination } from '../components/Pagination';
 
 export const Home = () => {
-  // const { searchValue } = useContext(SearchContext);
-
   const { categoryId, sortType, currentPage, orderSort, searchValue } =
     useSelector(state => state.filters);
   const { items, status } = useSelector(state => state.pizzas);
@@ -49,11 +47,7 @@ export const Home = () => {
   };
 
   const skeleton = [...new Array(6)].map((_, i) => <Skeleton key={i} />);
-  const pizzas = items.map(item => (
-    <Link key={item.id} to={`pizza/${item.id}`}>
-      <PizzaBlock {...item} />
-    </Link>
-  ));
+  const pizzas = items.map(item => <PizzaBlock key={item.id} {...item} />);
 
   //Если был первый рендер сохраняем URl параметры в редуксе
   useEffect(() => {

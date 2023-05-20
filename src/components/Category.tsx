@@ -1,6 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-export function Category({ value, onClickCategory }) {
+type CategoriesProps = { value: number; onClickCategory: any };
+
+export const Category: React.FC<CategoriesProps> = ({
+  value,
+  onClickCategory,
+}): JSX.Element => {
   const arrTitle = [
     'Все',
     'Мясные',
@@ -29,4 +34,4 @@ export function Category({ value, onClickCategory }) {
       <ul>{renderCategory()}</ul>
     </div>
   );
-}
+};

@@ -1,10 +1,14 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
 
-export const FullPizza = () => {
+export const FullPizza: React.FC = (): JSX.Element => {
   const { id } = useParams();
-  const [pizza, setPizza] = useState();
+  const [pizza, setPizza] = useState<{
+    imageUrl: string;
+    title: string;
+    price: number;
+  }>();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -15,7 +19,6 @@ export const FullPizza = () => {
         );
         setPizza(data);
       } catch (e) {
-        // console.log(e.message);
         alert('Пиццы не найдено..');
         navigate('/');
       }
@@ -24,7 +27,7 @@ export const FullPizza = () => {
   }, []);
 
   if (!pizza) {
-    return 'Loading...';
+    return <>Loading...</>;
   }
 
   return (

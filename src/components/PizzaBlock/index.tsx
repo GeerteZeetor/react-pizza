@@ -6,13 +6,31 @@ import { addItem } from '../../redux/slices/cartSlice';
 
 const typeNames = ['тонкое', 'традиционное'];
 
-export function PizzaBlock({ id, title, price, imageUrl, sizes, types }) {
+type PizzaBlockProps = {
+  id: string;
+  title: string;
+  price: number;
+  imageUrl: string;
+  sizes: number[];
+  types: number[];
+};
+
+export const PizzaBlock: React.FC<PizzaBlockProps> = ({
+  id,
+  title,
+  price,
+  imageUrl,
+  sizes,
+  types,
+}): JSX.Element => {
   const [activeType, setActiveType] = useState(0);
   const [activeSize, setActiveSize] = useState(0);
 
   const dispatch = useDispatch();
+
   const cartItem = useSelector(state =>
-    state.cart.items.find(obj => obj.id === id)
+    // @ts-ignore
+    state.cart.items.find((obj: { id: string }) => obj.id === id)
   );
 
   const onClickAdd = () => {
@@ -64,10 +82,7 @@ export function PizzaBlock({ id, title, price, imageUrl, sizes, types }) {
           <div className="pizza-block__price">от {price} ₽</div>
           <button
             className="button button--outline button--add"
-            onClick={() => {
-              onClickAdd();
-              // return setCount(count + 1);
-            }}
+            onClick={onClickAdd}
           >
             <svg
               width="12"
@@ -88,4 +103,4 @@ export function PizzaBlock({ id, title, price, imageUrl, sizes, types }) {
       </div>
     </div>
   );
-}
+};

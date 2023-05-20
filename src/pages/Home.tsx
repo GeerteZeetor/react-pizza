@@ -19,14 +19,16 @@ import { Pagination } from '../components/Pagination';
 
 export const Home = () => {
   const { categoryId, sortType, currentPage, orderSort, searchValue } =
+    // @ts-ignore
     useSelector(state => state.filters);
+  // @ts-ignore
   const { items, status } = useSelector(state => state.pizzas);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const isSearch = useRef(false);
-  const isMounted = useRef(false);
+  const isSearch = useRef<boolean>(false);
+  const isMounted = useRef<boolean>(false);
 
   const typeArr = ['rating', 'price', 'title'];
   const category = categoryId ? `category=${categoryId}` : '';
@@ -35,6 +37,7 @@ export const Home = () => {
 
   const getPizza = async () => {
     dispatch(
+      // @ts-ignore
       fetchPizzas({
         currentPage,
         category,
@@ -47,7 +50,9 @@ export const Home = () => {
   };
 
   const skeleton = [...new Array(6)].map((_, i) => <Skeleton key={i} />);
-  const pizzas = items.map(item => <PizzaBlock key={item.id} {...item} />);
+  const pizzas = items.map((item: any) => (
+    <PizzaBlock key={item.id} {...item} />
+  ));
 
   //Если был первый рендер сохраняем URl параметры в редуксе
   useEffect(() => {
@@ -87,13 +92,13 @@ export const Home = () => {
         <div className="content__top">
           <Category
             value={categoryId}
-            onClickCategory={id => dispatch(setCategoryId(id))}
+            onClickCategory={(id: number) => dispatch(setCategoryId(id))}
           />
           <Sort
             value={sortType}
-            onChangeSortType={type => dispatch(setSortType(type))}
+            onChangeSortType={(type: string) => dispatch(setSortType(type))}
             orderSort={orderSort}
-            onChangeOrderSort={value => dispatch(setOrderSort(value))}
+            onChangeOrderSort={(value: number) => dispatch(setOrderSort(value))}
           />
         </div>
         <h2 className="content__title">Все пиццы</h2>
@@ -122,7 +127,7 @@ export const Home = () => {
         )}
         <Pagination
           currentPage={currentPage}
-          onChangePage={number => dispatch(setCurrentPage(number))}
+          onChangePage={(num: number) => dispatch(setCurrentPage(num))}
         />
       </div>
     </>

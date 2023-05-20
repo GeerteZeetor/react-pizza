@@ -1,13 +1,20 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-export function Sort({
+type SortProps = {
+  value: number;
+  onChangeSortType: any;
+  onChangeOrderSort: any;
+  orderSort: boolean;
+};
+
+export const Sort: React.FC<SortProps> = ({
   value,
   onChangeSortType,
   onChangeOrderSort,
   orderSort,
-}) {
+}): JSX.Element => {
   const [open, setOpen] = useState(false);
-  const sortRef = useRef();
+  const sortRef = useRef<HTMLDivElement>(null);
   const sortNames = ['популярности', 'цене', 'алфавиту'];
 
   const sortActive = () => {
@@ -26,8 +33,9 @@ export function Sort({
   };
 
   useEffect(() => {
-    const handleClickOutside = e => {
-      if (!e.composedPath().includes(sortRef.current)) {
+    const handleClickOutside = (event: Event) => {
+      if (!sortRef.current) return;
+      if (!event.composedPath().includes(sortRef.current)) {
         setOpen(false);
       }
     };
@@ -80,4 +88,4 @@ export function Sort({
       )}
     </div>
   );
-}
+};

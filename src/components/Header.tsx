@@ -6,10 +6,13 @@ import { Search } from './Search';
 import { selectCart } from '../redux/slices/cartSlice';
 import logoSvg from '../assets/img/pizza-logo.svg';
 
-export function Header() {
+export function Header(): JSX.Element {
   const { items, totalPrice } = useSelector(selectCart);
 
-  const totalCount = items.reduce((sum, item) => sum + item.count, 0);
+  const totalCount: number = items.reduce(
+    (sum: number, item: { count: number }) => sum + item.count,
+    0
+  );
 
   return (
     <div className="header">

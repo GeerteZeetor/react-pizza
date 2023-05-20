@@ -9,7 +9,10 @@ import { clearItems, selectCart } from '../../redux/slices/cartSlice';
 export const CartBlock = () => {
   const dispatch = useDispatch();
   const { totalPrice, items } = useSelector(selectCart);
-  const totalCount = items.reduce((sum, item) => sum + item.count, 0);
+  const totalCount = items.reduce(
+    (sum: number, item: { count: number }) => sum + item.count,
+    0
+  );
 
   const onClickClearCart = () => {
     if (window.confirm('Вы действительно хотите очистить корзину?')) {
@@ -99,7 +102,7 @@ export const CartBlock = () => {
           </div>
         </div>
         <div className={style.content__items}>
-          {items.map(item => {
+          {items.map((item: any) => {
             return <CartItem key={item.id} {...item} />;
           })}
         </div>

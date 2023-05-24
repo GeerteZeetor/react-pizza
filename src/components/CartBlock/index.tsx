@@ -6,7 +6,7 @@ import { CartItem } from '../CartItem';
 import { CartEmpty } from '../CartEmpty';
 import { clearItems, selectCart } from '../../redux/slices/cartSlice';
 
-export const CartBlock = () => {
+export const CartBlock = React.memo(() => {
   const dispatch = useDispatch();
   const { totalPrice, items } = useSelector(selectCart);
   const totalCount = items.reduce(
@@ -16,7 +16,7 @@ export const CartBlock = () => {
 
   const onClickClearCart = () => {
     if (window.confirm('Вы действительно хотите очистить корзину?')) {
-      dispatch(clearItems(items));
+      dispatch(clearItems());
     }
   };
 
@@ -148,4 +148,4 @@ export const CartBlock = () => {
       </div>
     </div>
   );
-};
+});

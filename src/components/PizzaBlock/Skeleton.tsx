@@ -1,7 +1,7 @@
 import React from 'react';
 import ContentLoader from 'react-content-loader';
 
-const Skeleton: React.FC = (): JSX.Element => (
+export const Skeleton: React.FC = (): JSX.Element => (
   <div className="pizza-block-wrapper">
     <ContentLoader
       className="pizza-block"

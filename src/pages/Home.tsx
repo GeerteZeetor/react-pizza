@@ -8,15 +8,19 @@ import {
   setCurrentPage,
   setOrderSort,
   setSortType,
-} from '../redux/slices/filterSlice';
-import { fetchPizzas, Status } from '../redux/slices/pizzasSlice';
-import Skeleton from '../components/PizzaBlock/Skeleton';
-import { Category } from '../components/Category';
-import { SortPopup } from '../components/SortPopup';
-import { PizzaBlock } from '../components/PizzaBlock';
-import { Pagination } from '../components/Pagination';
+} from '../redux/slices/filter/slice';
+
+import {
+  Category,
+  Pagination,
+  PizzaBlock,
+  Skeleton,
+  SortPopup,
+} from '../components';
+
+import { fetchPizzas } from '../redux/slices/pizzas/asyncActions';
 import { RootState, useAppDispatch } from '../redux/store';
-import { useWhyDidYouUpdate } from 'ahooks';
+import { Status } from '../redux/slices/pizzas/types';
 
 export const Home = () => {
   const { categoryId, sortType, currentPage, orderSort, searchValue } =
@@ -34,7 +38,6 @@ export const Home = () => {
   const kindOfSorting = orderSort ? 'desc' : 'asc';
   const search = searchValue ? `title=${searchValue}` : '';
 
-  useWhyDidYouUpdate('Home', {});
   const getPizza = async () => {
     dispatch(
       fetchPizzas({

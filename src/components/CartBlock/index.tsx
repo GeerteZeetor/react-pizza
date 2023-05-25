@@ -2,9 +2,12 @@ import React from 'react';
 import style from './slyle.module.scss';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+
 import { CartItem } from '../CartItem';
 import { CartEmpty } from '../CartEmpty';
-import { clearItems, selectCart } from '../../redux/slices/cartSlice';
+
+import { selectCart } from '../../redux/slices/cart/selectors';
+import { clearItems } from '../../redux/slices/cart/slice';
 
 export const CartBlock = React.memo(() => {
   const dispatch = useDispatch();

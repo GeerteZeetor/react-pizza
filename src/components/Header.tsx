@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import { Search } from './Search';
-import { selectCart } from '../redux/slices/cartSlice';
+
 import logoSvg from '../assets/img/pizza-logo.svg';
+import { selectCart } from '../redux/slices/cart/selectors';
 
 export const Header = React.memo((): JSX.Element => {
   const { items, totalPrice } = useSelector(selectCart);
@@ -14,6 +15,16 @@ export const Header = React.memo((): JSX.Element => {
     0
   );
   const location = useLocation();
+  const isMounted = useRef(false);
+
+  useEffect(() => {
+    if (isMounted.current) {
+      let json = JSON.stringify(items);
+      localStorage.setItem('cart', json);
+    }
+
+    isMounted.current = true;
+  }, [items]);
 
   return (
     <div className="header">
